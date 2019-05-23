@@ -1,0 +1,28 @@
+;; The first three lines of this file were inserted by DrRacket. They record metadata
+;; about the language level of this file in a form that our tools can easily process.
+#reader(lib "htdp-advanced-reader.ss" "lang")((modname constructing-cyclic-data) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #t #t none #f () #f)))
+(define-struct room (name exits))
+;; Room is (make-room String (Listof Room))
+;; interp the room's name and list of rooms that the exits lead to
+
+(define H1 (make-room "A" (list (make-room "B" empty))))
+
+(define H2
+  (shared ((-0- (make-room "A" (list (make-room "B" (list -0-))))))
+    -0-))
+
+(define H3
+  (shared ((-A- (make-room "A" (list -B-)))
+           (-B- (make-room "B" (list -C-)))
+           (-C- (make-room "C" (list -A-))))
+    -A-))
+
+(define H4
+  (shared ((-A- (make-room "A" (list -B- -D-)))
+           (-B- (make-room "B" (list -C- -E-)))
+           (-C- (make-room "C" (list -B-)))
+           (-D- (make-room "D" (list -E-)))
+           (-E- (make-room "E" (list -F- -A-)))
+           (-F- (make-room "F" (list ))))
+    -A-))
+            
